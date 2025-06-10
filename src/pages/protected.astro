@@ -10,11 +10,19 @@ if (!isLoggedIn || !user) {
 
 const { 
 	avatar, 
-	email, 
-	emailVerified, 
+	email,
 	name 
 } = user;
 
+const firebaseUser = firebase.auth.currentUser;
+let emailVerified = false;
+if (firebaseUser) {
+  await firebaseUser.reload();
+  emailVerified = firebaseUser.emailVerified;
+} else {
+  // firebaseUser es null => sin usuario autenticado en SSR
+  // Decide qué hacer: quizás redirigir o asignar false
+}
 // const name = displayName ?? 'No display name'
 ---
 
